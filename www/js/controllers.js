@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngStorage'])
 
-.controller('AppCtrl', function($scope, $state, $http, $localStorage, $window) {
+.controller('AppCtrl', function($scope, $state, $http, $sessionStorage, $window) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -15,25 +15,24 @@ angular.module('starter.controllers', ['ngStorage'])
         $state.go($state.current, {}, {reload: true});
     };
 
-    if (angular.isDefined($localStorage.currentUser)) {
+    if (angular.isDefined($sessionStorage.currentUser)) {
         $scope.logged = true;
     }
     else {
         $scope.logged = false;
     }
-    if (angular.isDefined($localStorage.currentUser)) {
-        $scope.currentUser = $localStorage.currentUser;
+    if (angular.isDefined($sessionStorage.currentUser)) {
+        $scope.currentUser = $sessionStorage.currentUser;
     }
 
     $scope.logout = function () {
-        $localStorage.$reset();
+        $sessionStorage.$reset();
         $state.go('app.login');
         $window.location.reload(true);
     };
 
 })
     .controller('RegisterController', function($scope, $http, $state, $ionicPopup){
-        $scope.apilink = "http://eliesmakhlouf.com/API/";
 
         $scope.register = function() {
             if ($scope.userData.user_name && $scope.userData.user_password) {
@@ -63,14 +62,29 @@ angular.module('starter.controllers', ['ngStorage'])
                                         ]
                                     });
                                 } else {
-                                    $scope.error = "Ce compte existe déjà";
+                                    $ionicPopup.alert({
+                                        title:"Ce compte existe déjà",
+                                        button:[
+                                            {
+                                                text: 'Ok',
+                                                type: 'button-positive',
+                                                onTap: function(){
+                                                    $state.go('app.register');
+                                                }
+                                            }
+                                        ]
+                                    });
                                 }
+                            },
+                            function(error) {
+                                $scope.userData = {};
+                                console.log(error);
                             }
                         );
                 }
             }else{
                 $ionicPopup.alert({
-                    title:"Veuillez remplir tous les champs !",
+                    title:"Veuillez remplir tous les champs",
                     button:[
                         {
                             text: 'Ok',
@@ -86,14 +100,12 @@ angular.module('starter.controllers', ['ngStorage'])
     })
 
 
-    .controller('LoginController', function($scope, $http, $state, $localStorage, $window){
-        $scope.apilink = "http://eliesmakhlouf.com/API/";
+    .controller('LoginController', function($scope, $http, $state, $sessionStorage, $window, $ionicPopup, $timeout){
 
-        if (angular.isDefined($localStorage.currentUser)) {
+        if (angular.isDefined($sessionStorage.currentUser)) {
             $state.go('app.profil');
         }
 
-        $scope.userData = {};
 
         $scope.viewRegister = function() {
             $state.go("app.register");
@@ -112,23 +124,54 @@ angular.module('starter.controllers', ['ngStorage'])
                     })
                     .then(function (res) {
                             var response = res.data;
-                            $state.go('app.profil');
-                            $window.location.reload(true);
-                            $scope.UserDate = {};
-                            $localStorage.currentUser = response.user;
-                            console.log($localStorage.currentUser);
-                        },
+
+                            if(response.success == true) {
+                                $scope.userData = {};
+                                $sessionStorage.currentUser = response.user;
+                                $timeout(function(){
+                                    $state.go('app.profil');
+                                    $window.location.reload(true);
+                                    console.log($sessionStorage.currentUser);
+                                }, 200);
+
+                            }else {
+                                $scope.userData.user_password = "";
+                                $ionicPopup.alert({
+                                    title:"Identifiants incorrects",
+                                    button:[
+                                        {
+                                            text: 'Ok',
+                                            type: 'button-positive',
+                                            onTap: function(){
+                                                $state.go('app.login');
+                                            }
+                                        }
+                                    ]
+                                });
+                            }
+                    },
                         function () {
-                            console.warn('ERROR REGISTER');
+                            console.log('ERROR REGISTER');
                             $scope.userData = {};
                         });
             }else{
-                $scope.error = "Veuillez remplir tous les champs"
+                $ionicPopup.alert({
+                    title:"Veuillez remplir tous les champs",
+                    button:[
+                        {
+                            text: 'Ok',
+                            type: 'button-positive',
+                            onTap: function(){
+                                $state.go('app.login');
+                            }
+                        }
+                    ]
+                });
             }
         };
     })
 
-    .controller('ProfilController', function($scope, $http, $state, $localStorage, $window){
+    .controller('ProfilController', function($scope, $http, $state, $sessionStorage, $window){
         $scope.users = [];
         $http.post($scope.apilink + "User/UserController.php", {
                 type : "user",
@@ -137,7 +180,6 @@ angular.module('starter.controllers', ['ngStorage'])
             .then(function(res){
                     var response = res.data;
                     $scope.users = response;
-                    console.log($scope.users);
                 },
 
                 function(error){
