@@ -80,7 +80,7 @@ class UserController
                 if($response == false) {
                     $sql = "INSERT INTO omc_users2 (user_name, user_password) values(?, ?)";
                     $q = $pdo->prepare($sql);
-                    $q->execute(array($user_pseudo, md5($user_password)));
+                    $q->execute(array($user_name, md5($user_password)));
                     $result = $pdo->lastInsertId();
                     if($result)
                         $data["success"] = true;
