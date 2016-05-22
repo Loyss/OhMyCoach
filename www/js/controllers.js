@@ -30,7 +30,6 @@ angular.module('starter.controllers', ['ngStorage'])
         $state.go('app.login');
         $window.location.reload(true);
     };
-
 })
     .controller('RegisterController', function($scope, $http, $state, $ionicPopup){
 
@@ -61,7 +60,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                             }
                                         ]
                                     });
-                                } else {
+                                }else {
                                     $ionicPopup.alert({
                                         title:"Ce compte existe déjà",
                                         button:[

@@ -2,6 +2,8 @@
 require("../config.php");
 
 header('Access-Control-Allow-Origin: *');
+$file ="http://eliesmakhlouf.com/API/UserController.php";
+readfile($file);
 
 $action = new UserController();
 
@@ -49,7 +51,7 @@ class UserController
 
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "Select * from omc_users";
+        $sql = "Select * from omc_users2";
         $q = $pdo->prepare($sql);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -60,35 +62,37 @@ class UserController
     }
 
     private function register(){
-        $user_pseudo = $this->params->user->user_pseudo;
-        $user_email = $this->params->user->user_email;
-        $user_password = $this->params->user->user_password;
-        $coach_name = $this->params->user->coach_name;
-        $data['success'] = "";
 
-        if ( (!empty($user_pseudo) && !empty($user_email) && !empty($user_password) && !empty($coach_name) ) ) {
+        if (!empty($this->params->user)) {
 
-            $pdo = Database::connect();
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "SELECT user_pseudo FROM omc_users WHERE user_pseudo = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($user_pseudo, $user_email));
-            $response= $q->fetch();
-            if($response == false) {
-                $sql = "INSERT INTO omc_users (user_pseudo, user_email, user_password, coach_name) values(?, ?, ?, ?)";
+            $user_name = $this->params->user->user_name;
+            $user_password = $this->params->user->user_password;
+            $data['success'] = "";
+
+            if ( (!empty($user_name) && !empty($user_password) ) ) {
+
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "SELECT user_name FROM omc_users2 WHERE user_name = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_pseudo, $user_email, md5($user_password), $coach_name));
-                $result = $pdo->lastInsertId();
-                if($result)
-                    $data["success"] = true;
-                else
-                    $data["success"] = false;
+                $q->execute(array($user_name));
+                $response= $q->fetch();
+                if($response == false) {
+                    $sql = "INSERT INTO omc_users2 (user_name, user_password) values(?, ?)";
+                    $q = $pdo->prepare($sql);
+                    $q->execute(array($user_pseudo, md5($user_password)));
+                    $result = $pdo->lastInsertId();
+                    if($result)
+                        $data["success"] = true;
+                    else
+                        $data["success"] = false;
+                }
+                Database::disconnect();
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($data);
             }
-            Database::disconnect();
-            header('Cache-Control: no-cache, must-revalidate');
-            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-            header('Content-type: application/json');
-            echo json_encode($data);
         }
     }
 
@@ -96,17 +100,17 @@ class UserController
     {
         if (!empty($this->params->user)) {
 
-            $user_email = $this->params->user->user_email;
+            $user_name = $this->params->user->user_name;
             $user_password = $this->params->user->user_password;
 
-            if ( (!empty($user_email) && !empty($user_password)) )
+            if ( (!empty($user_name) && !empty($user_password)) )
             {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                $sql = "SELECT user_email FROM omc_users WHERE user_email = ? AND user_password = ?";
+                $sql = "SELECT user_name, user_id FROM omc_users2 WHERE user_name = ? AND user_password = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_email, md5($user_password)));
+                $q->execute(array($user_name, md5($user_password)));
                 $response = $q->fetch(PDO::FETCH_ASSOC);
                 $data['user'] = $response;
 
@@ -116,7 +120,6 @@ class UserController
                 else {
                     $data["success"] = true;
                 }
-                Database::disconnect();
                 Database::disconnect();
                 //RESPONSE
                 header('Cache-Control: no-cache, must-revalidate');
