@@ -90,7 +90,7 @@ angular.module('starter.controllers', ['ngStorage'])
                             text: 'Ok',
                             type: 'button-positive',
                             onTap: function(){
-                                $state.go('app.register');
+                                $state.go($state.current);
                             }
                         }
                     ]
@@ -100,7 +100,7 @@ angular.module('starter.controllers', ['ngStorage'])
     })
 
 
-    .controller('LoginController', function($scope, $http, $state, $sessionStorage, $window, $ionicPopup, $timeout){
+    .controller('LoginController', function($scope, $http, $state, $sessionStorage, $window, $ionicPopup){
 
         if (angular.isDefined($sessionStorage.currentUser)) {
             $state.go('app.profil');
@@ -128,12 +128,9 @@ angular.module('starter.controllers', ['ngStorage'])
                             if(response.success == true) {
                                 $scope.userData = {};
                                 $sessionStorage.currentUser = response.user;
-                                $timeout(function(){
-                                    $state.go('app.profil');
-                                    $window.location.reload(true);
-                                    console.log($sessionStorage.currentUser);
-                                }, 200);
-
+                                $state.go('app.profil');
+                                $window.location.reload(true);
+                                console.log($sessionStorage.currentUser);
                             }else {
                                 $scope.userData.user_password = "";
                                 $ionicPopup.alert({
@@ -162,7 +159,7 @@ angular.module('starter.controllers', ['ngStorage'])
                             text: 'Ok',
                             type: 'button-positive',
                             onTap: function(){
-                                $state.go('app.login');
+                                $state.go($state.current);
                             }
                         }
                     ]
@@ -185,4 +182,24 @@ angular.module('starter.controllers', ['ngStorage'])
                 function(error){
                     console.log(error)
                 });
+    })
+    .controller('FormController', function($scope, $http, $state, $sessionStorage, $window){
+        $scope.viewForm2 = function() {
+            $state.go("app.form2");
+            $scope.error = "";
+        };
+
+        $scope.viewForm3 = function() {
+            $state.go("app.form3");
+            $scope.error = "";
+        };
+        $scope.viewResult = function() {
+            $state.go("app.result");
+            $scope.error = "";
+        };
+        $scope.viewProfil = function() {
+            $state.go("app.profil", {}, {reload: true});
+            $scope.error = "";
+            $window.location.reload(true);
+        };
     });

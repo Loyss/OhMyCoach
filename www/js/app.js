@@ -58,6 +58,42 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                         controller: "ProfilController"
                     }
                 }
+            })
+            .state('app.form', {
+                url: '/form',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/form.html',
+                        controller: "FormController"
+                    }
+                }
+            })
+            .state('app.form2', {
+                url: '/form2',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/form2.html',
+                        controller: "FormController"
+                    }
+                }
+            })
+            .state('app.form3', {
+                url: '/form3',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/form3.html',
+                        controller: "FormController"
+                    }
+                }
+            })
+            .state('app.result', {
+                url: '/result',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/result.html',
+                        controller: "FormController"
+                    }
+                }
             });
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/login');
