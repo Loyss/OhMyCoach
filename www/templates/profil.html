@@ -1,0 +1,10 @@
+<ion-view view-title="Profil">
+    <ion-content class="padding">
+        <ion-list ng-switch="logged">
+            <h3 ng-switch-when="true" class="title">Salut {{currentUser.user_pseudo}} </h3>
+        </ion-list>
+        <ion-item ng-repeat="user in users">
+            {{user.user_pseudo}}
+        </ion-item>
+    </ion-content>
+</ion-view>
