@@ -167,7 +167,7 @@ angular.module('starter.controllers', ['ngStorage'])
         };
     })
 
-    .controller('ProfilController', function($scope, $http, $state, $sessionStorage, $window){
+    .controller('ProfilController', function($scope, $http){
         $scope.users = [];
         $http.post($scope.apilink + "User/UserController.php", {
                 type : "user",
@@ -196,6 +196,8 @@ angular.module('starter.controllers', ['ngStorage'])
             $state.go("app.result");
             $scope.error = "";
         };
+    })
+    .controller('ResultsController', function($scope, $state, $window){
         $scope.viewProfil = function() {
             $state.go("app.profil", {}, {reload: true});
             $scope.error = "";

@@ -91,7 +91,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/result.html',
-                        controller: "FormController"
+                        controller: "ResultsController"
                     }
                 }
             });
