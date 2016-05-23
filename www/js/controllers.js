@@ -31,16 +31,17 @@ angular.module('starter.controllers', ['ngStorage'])
         $window.location.reload(true);
     };
 })
-    .controller('RegisterController', function($scope, $http, $state, $ionicPopup){
+    .controller('RegisterController', function($scope, $http, $state, $ionicPopup, $window){
 
         $scope.register = function() {
-            if ($scope.userData.user_name && $scope.userData.user_password) {
-                if ($scope.userData.user_name && $scope.userData.user_password) {
+            if ($scope.userData.user_pseudo && $scope.userData.user_email && $scope.userData.user_password) {
+                if ($scope.userData.user_pseudo && $scope.userData.user_email && $scope.userData.user_password) {
                     $http.post($scope.apilink + "User/UserController.php", {
                             type: "user",
                             action: "register",
                             user: {
-                                user_name: $scope.userData.user_name,
+                                user_pseudo: $scope.userData.user_pseudo,
+                                user_email: $scope.userData.user_email,
                                 user_password: $scope.userData.user_password
                             }
                         })
@@ -48,14 +49,14 @@ angular.module('starter.controllers', ['ngStorage'])
                                 var response = res.data;
                                 if (response.success == true) {
                                     $ionicPopup.alert({
-                                        title: "Success",
-                                        button: [
+                                        title: "Inscription réussi",
+                                        buttons: [
                                             {
-                                                text: 'Start Test',
-                                                type: 'button-calm',
+                                                text: 'Connectez-vous',
+                                                type: 'button-positive',
                                                 onTap: function () {
-                                                    $state.go('app.profil');
-                                                    $scope.UserData = {};
+                                                    $state.go('app.login');
+                                                    $window.location.reload(true);
                                                 }
                                             }
                                         ]
@@ -68,7 +69,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                                 text: 'Ok',
                                                 type: 'button-positive',
                                                 onTap: function(){
-                                                    $state.go('app.register');
+                                                    $state.go($state.current);
+
                                                 }
                                             }
                                         ]
@@ -112,12 +114,12 @@ angular.module('starter.controllers', ['ngStorage'])
         };
 
         $scope.login = function() {
-            if ($scope.userData.user_name && $scope.userData.user_password) {
+            if ($scope.userData.user_email && $scope.userData.user_password) {
                 $http.post($scope.apilink + "User/UserController.php", {
                         type: "user",
                         action: "login",
                         user: {
-                            user_name: $scope.userData.user_name,
+                            user_email: $scope.userData.user_email,
                             user_password: $scope.userData.user_password
                         }
                     })
@@ -167,8 +169,9 @@ angular.module('starter.controllers', ['ngStorage'])
         };
     })
 
-    .controller('ProfilController', function($scope, $http){
+    .controller('ProfilController', function($scope, $http, $state, $sessionStorage){
         $scope.users = [];
+
         $http.post($scope.apilink + "User/UserController.php", {
                 type : "user",
                 action : "findAll"
@@ -203,4 +206,5 @@ angular.module('starter.controllers', ['ngStorage'])
             $scope.error = "";
             $window.location.reload(true);
         };
+
     });
