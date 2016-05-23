@@ -2,11 +2,8 @@
 require("../config.php");
 
 header('Access-Control-Allow-Origin: *');
-$file ="http://eliesmakhlouf.com/API/UserController.php";
-readfile($file);
 
 $action = new UserController();
-
 
 class UserController
 {
