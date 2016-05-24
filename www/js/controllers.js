@@ -41,9 +41,7 @@ angular.module('starter.controllers', ['ngStorage'])
                             action: "register",
                             user: {
                                 user_pseudo: $scope.userData.user_pseudo,
-                                user_email: $scope.userData.user_email = {
-                                    test: 'me@example.com'
-                                },
+                                user_email: $scope.userData.user_email,
                                 user_password: $scope.userData.user_password
                             }
                         })
@@ -316,5 +314,8 @@ angular.module('starter.controllers', ['ngStorage'])
             $scope.error = "";
             $window.location.reload(true);
         };
+
+    })
+    .controller('ProgramController', function($scope, $http, $state, $sessionStorage, $window){
 
     });

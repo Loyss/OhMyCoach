@@ -94,6 +94,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                         controller: "ResultsController"
                     }
                 }
+            })
+            .state('app.program', {
+                url: '/program',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/program.html',
+                        controller: "ProgramController"
+                    }
+                }
             });
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/login');
