@@ -6,6 +6,23 @@
         <ion-item ng-repeat="user in users">
             {{user.user_pseudo}}
         </ion-item>
-        <button class="button button-block button-assertive" type="button" ng-click="deleteUser()">Supprimer compte</button>
+        <form ng-submit="updateUser()">
+            <div class="list list-inset">
+                <div class="item item-divider">
+                    Modifier mon mot de passe
+                </div>
+                <div class="item tex-center">
+                    {{ currentUser.user_email }}
+                </div>
+                <label class="item item-input">
+                    <input type="password" placeholder="Nouveau mot de passe" ng-model="userData.user_password">
+                </label>
+                <label class="item item-input">
+                    <input type="password" placeholder="Confirmation du nouveau mot de passe" ng-model="userData.user_password_confirm">
+                </label>
+                <button class="button button-block button-positive" type="submit">Enregistrer</button>
+                <button class="button button-block button-assertive" type="button" ng-click="deleteUser()">Supprimer compte</button>
+            </div>
+        </form>
     </ion-content>
 </ion-view>

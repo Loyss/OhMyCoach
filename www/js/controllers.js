@@ -186,6 +186,76 @@ angular.module('starter.controllers', ['ngStorage'])
                     console.log(error)
                 });
 
+
+        $scope.updateUser = function (){
+            if($scope.userData.user_password && $scope.userData.user_password_confirm){
+                if ($scope.userData.user_password == $scope.userData.user_password_confirm) {
+                    $scope.error = "";
+
+                    $http.post($scope.apilink+"User/UserController.php",
+                        {
+                            type : 'user',
+                            action : 'update',
+                            user: {
+                                user_password : $scope.userData.user_password,
+                                user_id : $sessionStorage.currentUser.user_id
+                            }
+                        })
+
+                        .then(function (res){
+                                var response = res.data;
+                                $ionicPopup.alert({
+                                    title: "Mot de passe modifié",
+                                    buttons: [
+                                        {
+                                            text: 'Ok',
+                                            type: 'button-positive',
+                                            onTap: function () {
+                                                $state.go($state.current, {}, {reload: true});
+                                                $scope.userData = {};
+                                            }
+                                        }
+                                    ]
+                                });
+                            },
+                            function(error){
+                                $scope.userData = {};
+                                console.log(error);
+                            }
+                        );
+                }
+                else {
+                    $ionicPopup.alert({
+                        title:"Password doesn't match",
+                        button:[
+                            {
+                                text: 'Ok',
+                                type: 'button-positive',
+                                onTap: function(){
+                                    $state.go($state.current);
+                                }
+                            }
+                        ]
+                    });
+                    $scope.userData.user_password_confirm = "";
+                }
+            }
+            else {
+                $ionicPopup.alert({
+                    title:"Veuillez remplir tous les champs",
+                    button:[
+                        {
+                            text: 'Ok',
+                            type: 'button-positive',
+                            onTap: function(){
+                                $state.go($state.current);
+                            }
+                        }
+                    ]
+                });
+            }
+        };
+
         $scope.deleteUser = function () {
             $ionicPopup.confirm({
                 title: 'Supprimer mon compte ?',
@@ -212,12 +282,10 @@ angular.module('starter.controllers', ['ngStorage'])
                                 .then(function (res) {
                                         var response = res.data;
                                         $scope.logout();
-                                        console.log(response);
 
 
-                                    }, function (error) {
+                                    }, function () {
                                         console.warn('ERROR DELETE PRODUCT');
-                                        console.log(error);
                                     }
                                 );
                         }
