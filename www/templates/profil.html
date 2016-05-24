@@ -1,10 +1,11 @@
 <ion-view view-title="Profil">
     <ion-content class="padding">
         <ion-list ng-switch="logged">
-            <h3 ng-switch-when="true" class="title">Salut {{currentUser.user_pseudo}} </h3>
+            <h3 ng-switch-when="true" class="title">Salut {{ currentUser.user_email }} </h3>
         </ion-list>
         <ion-item ng-repeat="user in users">
             {{user.user_pseudo}}
         </ion-item>
+        <button class="button button-block button-assertive" type="button" ng-click="deleteUser()">Supprimer compte</button>
     </ion-content>
 </ion-view>

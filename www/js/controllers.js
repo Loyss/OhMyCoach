@@ -169,7 +169,8 @@ angular.module('starter.controllers', ['ngStorage'])
         };
     })
 
-    .controller('ProfilController', function($scope, $http, $state, $sessionStorage){
+    .controller('ProfilController', function($scope, $http, $state, $sessionStorage, $ionicPopup){
+
         $scope.users = [];
 
         $http.post($scope.apilink + "User/UserController.php", {
@@ -184,6 +185,46 @@ angular.module('starter.controllers', ['ngStorage'])
                 function(error){
                     console.log(error)
                 });
+
+        $scope.deleteUser = function () {
+            $ionicPopup.confirm({
+                title: 'Supprimer mon compte ?',
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function () {
+                            $http.post($scope.apilink + "User/UserController.php", {
+                                    type: 'user',
+                                    action: 'delete',
+                                    user: {
+                                        user_id: $sessionStorage.currentUser.user_id,
+                                        user_email: $sessionStorage.currentUser.user_email
+                                    }
+                                })
+
+                                .then(function (res) {
+                                        var response = res.data;
+                                        $scope.logout();
+                                        console.log(response);
+
+
+                                    }, function (error) {
+                                        console.warn('ERROR DELETE PRODUCT');
+                                        console.log(error);
+                                    }
+                                );
+                        }
+                    }
+                ]
+            });
+        }
     })
     .controller('FormController', function($scope, $http, $state, $sessionStorage, $window){
         $scope.viewForm2 = function() {
