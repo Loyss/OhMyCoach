@@ -36,9 +36,13 @@ class UserController
             if ($this->params->action == "login"){
                 $this->login();
             }
+            if ($this->params->action == "update"){
+                $this->updateUser();
+            }
             if ($this->params->action == "delete"){
                 $this->deleteUser();
             }
+
         }
 
     }
@@ -127,6 +131,27 @@ class UserController
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
                 echo json_encode($data);
+            }
+        }
+    }
+
+    private function updateUser() {
+        if (!empty($this->params->user)) {
+
+            $user_id = $this->params->user->user_id;
+            $user_password = $this->params->user->user_password;
+
+            if ( (!empty($user_id)) && (!empty($user_password)) ) {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "UPDATE omc_users SET user_password = ? WHERE user_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_id, md5($user_password)));
+                Database::disconnect();
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($q);
             }
         }
     }
