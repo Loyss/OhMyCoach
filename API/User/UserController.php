@@ -36,6 +36,9 @@ class UserController
             if ($this->params->action == "login"){
                 $this->login();
             }
+            if ($this->params->action == "delete"){
+                $this->deleteUser();
+            }
         }
 
     }
@@ -48,7 +51,7 @@ class UserController
 
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "Select * from omc_users2";
+        $sql = "Select * from omc_users";
         $q = $pdo->prepare($sql);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -62,22 +65,23 @@ class UserController
 
         if (!empty($this->params->user)) {
 
-            $user_name = $this->params->user->user_name;
+            $user_pseudo = $this->params->user->user_pseudo;
+            $user_email = $this->params->user->user_email;
             $user_password = $this->params->user->user_password;
             $data['success'] = "";
 
-            if ( (!empty($user_name) && !empty($user_password) ) ) {
+            if ( (!empty($user_pseudo) && !empty($user_email) && !empty($user_password) ) ) {
 
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "SELECT user_name FROM omc_users2 WHERE user_name = ?";
+                $sql = "SELECT user_pseudo, user_email FROM omc_users WHERE user_pseudo = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_name));
+                $q->execute(array($user_pseudo));
                 $response= $q->fetch();
                 if($response == false) {
-                    $sql = "INSERT INTO omc_users2 (user_name, user_password) values(?, ?)";
+                    $sql = "INSERT INTO omc_users (user_pseudo, user_email, user_password) values(?, ?, ?)";
                     $q = $pdo->prepare($sql);
-                    $q->execute(array($user_name, md5($user_password)));
+                    $q->execute(array($user_pseudo, $user_email, md5($user_password)));
                     $result = $pdo->lastInsertId();
                     if($result)
                         $data["success"] = true;
@@ -97,17 +101,17 @@ class UserController
     {
         if (!empty($this->params->user)) {
 
-            $user_name = $this->params->user->user_name;
+            $user_email = $this->params->user->user_email;
             $user_password = $this->params->user->user_password;
 
-            if ( (!empty($user_name) && !empty($user_password)) )
+            if ( (!empty($user_email) && !empty($user_password)) )
             {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                $sql = "SELECT user_name, user_id FROM omc_users2 WHERE user_name = ? AND user_password = ?";
+                $sql = "SELECT user_email, user_id FROM omc_users WHERE user_email = ? AND user_password = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_name, md5($user_password)));
+                $q->execute(array($user_email, md5($user_password)));
                 $response = $q->fetch(PDO::FETCH_ASSOC);
                 $data['user'] = $response;
 
@@ -123,6 +127,28 @@ class UserController
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
                 echo json_encode($data);
+            }
+        }
+    }
+
+    private function deleteUser(){
+
+        if (!empty($this->params->user)) {
+
+            $user_id = $this->params->user->user_id;
+            $user_email = $this->params->user->user_email;
+
+            if (!empty($user_id) && !empty($user_email)) {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "DELETE FROM omc_users WHERE user_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_id));
+                Database::disconnect();
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($q);
             }
         }
     }
