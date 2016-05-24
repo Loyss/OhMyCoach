@@ -197,8 +197,8 @@ angular.module('starter.controllers', ['ngStorage'])
                             type : 'user',
                             action : 'update',
                             user: {
-                                user_password : $scope.userData.user_password,
-                                user_id : $sessionStorage.currentUser.user_id
+                                user_id : $sessionStorage.currentUser.user_id,
+                                user_password : $scope.userData.user_password
                             }
                         })
 
