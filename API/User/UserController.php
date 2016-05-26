@@ -42,6 +42,9 @@ class UserController
             if ($this->params->action == "delete"){
                 $this->deleteUser();
             }
+            if ($this->params->action == "findUserCoach"){
+                $this->findUserCoach();
+            }
 
         }
 
@@ -78,12 +81,12 @@ class UserController
 
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "SELECT user_pseudo, user_email FROM omc_users WHERE user_pseudo = ?";
+                $sql = "SELECT user_pseudo FROM omc_users WHERE user_pseudo = ?";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($user_pseudo));
                 $response= $q->fetch();
                 if($response == false) {
-                    $sql = "INSERT INTO omc_users (user_pseudo, user_email, user_password) values(?, ?, ?)";
+                    $sql = "INSERT INTO omc_users (user_pseudo, user_email, user_password, date_register) values(?, ?, ?, NOW())";
                     $q = $pdo->prepare($sql);
                     $q->execute(array($user_pseudo, $user_email, md5($user_password)));
                     $result = $pdo->lastInsertId();
@@ -101,8 +104,8 @@ class UserController
         }
     }
 
-    private function login()
-    {
+    private function login() {
+
         if (!empty($this->params->user)) {
 
             $user_email = $this->params->user->user_email;
@@ -113,7 +116,7 @@ class UserController
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                $sql = "SELECT user_email, user_id FROM omc_users WHERE user_email = ? AND user_password = ?";
+                $sql = "SELECT user_pseudo, user_email, user_id, user_coach FROM omc_users WHERE user_email = ? AND user_password = ?";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($user_email, md5($user_password)));
                 $response = $q->fetch(PDO::FETCH_ASSOC);

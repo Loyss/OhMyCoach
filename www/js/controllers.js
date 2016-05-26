@@ -11,6 +11,9 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker'])
   //});
     $scope.apilink = "http://eliesmakhlouf.com/API/";
     $scope.userData = {};
+    $scope.users = [];
+    $scope.coaches = [];
+
 
     $scope.doRefresh = function() {
         $state.go($state.current, {}, {reload: true});
@@ -171,21 +174,21 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker'])
 
     .controller('ProfilController', function($scope, $http, $state, $sessionStorage, $ionicPopup){
 
-        $scope.users = [];
-        $scope.coaches = [];
+        if($scope.logged == true){
+            $http.post($scope.apilink + "Coach/CoachController.php", {
+                    type : "coach",
+                    action : "findAll"
+                })
+                .then(function(res){
+                        var response = res.data;
+                        $scope.coaches = response;
+                    },
 
-        $http.post($scope.apilink + "Coach/CoachController.php", {
-                type : "coach",
-                action : "findAll"
-            })
-            .then(function(res){
-                    var response = res.data;
-                    $scope.coaches = response;
-                },
+                    function(error){
+                        console.log(error)
+                    });
+        }
 
-                function(error){
-                    console.log(error)
-                });
 
         $http.post($scope.apilink + "User/UserController.php", {
                 type : "user",

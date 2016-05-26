@@ -25,7 +25,7 @@ class CoachController
 
     private function initialize()
     {
-        if($this->params->type == "user"){
+        if($this->params->type == "coach"){
 
             if ($this->params->action == "findAll"){
                 $this->findAllCoach();

@@ -7,6 +7,9 @@
             {{user.user_pseudo}}
         </ion-item>
         <ion-list>
+            <h4>Votre coach est {{currentUser.user_coach}}</h4>
+        </ion-list>
+        <ion-list>
             <h4>Voici la liste des Coaches actuels</h4>
             <ion-item ng-repeat="coach in coaches">
                 {{coach.name}}
