@@ -1,4 +1,5 @@
-angular.module('starter.controllers', ['ngStorage'])
+angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker'])
+
 
 .controller('AppCtrl', function($scope, $state, $http, $sessionStorage, $window) {
 
@@ -307,6 +308,40 @@ angular.module('starter.controllers', ['ngStorage'])
             $state.go("app.result");
             $scope.error = "";
         };
+        var sexeArray = ['homme', 'femme', 'peu importe'];
+        var choixSexe = sexeArray[Math.floor(Math.random() * sexeArray.length)];
+        console.log(choixSexe);
+
+        var attitudeArray = ['ami', 'officier', 'peu importe'];
+        var choixAttitude = attitudeArray[Math.floor(Math.random() * attitudeArray.length)];
+        console.log(choixAttitude);
+
+        if (choixSexe === "peu importe") {
+            var sexeArray = ['homme', 'femme'];
+            var choixSexe = sexeArray[Math.floor(Math.random() * sexeArray.length)];
+            console.log(choixSexe);
+        }
+
+        if (choixAttitude === "peu importe") {
+            var attitudeArray = ['ami', 'officier'];
+            var choixAttitude = attitudeArray[Math.floor(Math.random() * attitudeArray.length)];
+            console.log(choixAttitude);
+        }
+
+        function _choiceCoach() {
+
+            if(choixSexe === "femme" && choixAttitude === "ami"){
+                console.log('Jade');
+            }else if (choixSexe === "femme" && choixAttitude === "officier"){
+                console.log('Celine');
+            }else if (choixSexe === "homme" && choixAttitude === "ami") {
+                console.log('Arthur');
+            }else{
+                console.log('Bruce')
+            }
+
+        }
+        _choiceCoach();
     })
     .controller('ResultsController', function($scope, $state, $window){
         $scope.viewProfil = function() {
@@ -316,6 +351,6 @@ angular.module('starter.controllers', ['ngStorage'])
         };
 
     })
-    .controller('ProgramController', function($scope, $http, $state, $sessionStorage, $window){
+    .controller('ProgramController', function($scope ){
 
     });
