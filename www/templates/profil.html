@@ -3,9 +3,6 @@
         <ion-list ng-switch="logged">
             <h3 ng-switch-when="true" class="title">Salut {{ currentUser.user_pseudo }} </h3>
         </ion-list>
-        <ion-item ng-repeat="user in users">
-            {{user.user_pseudo}}
-        </ion-item>
         <ion-list>
             <h4>Votre coach est {{currentUser.user_coach}}</h4>
         </ion-list>
