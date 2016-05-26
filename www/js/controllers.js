@@ -172,6 +172,20 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker'])
     .controller('ProfilController', function($scope, $http, $state, $sessionStorage, $ionicPopup){
 
         $scope.users = [];
+        $scope.coaches = [];
+
+        $http.post($scope.apilink + "Coach/CoachController.php", {
+                type : "coach",
+                action : "findAll"
+            })
+            .then(function(res){
+                    var response = res.data;
+                    $scope.coaches = response;
+                },
+
+                function(error){
+                    console.log(error)
+                });
 
         $http.post($scope.apilink + "User/UserController.php", {
                 type : "user",
