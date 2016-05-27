@@ -368,6 +368,26 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker'])
         };
 
     })
-    .controller('ProgramController', function($scope ){
+    .controller('ProgramController', function($scope, ionicTimePicker ){
+
+
+        $scope.timetime = function(){
+            var ipObj1 = {
+                callback: function (val) {
+                    if (typeof (val) === 'undefined') {
+                        console.log('Time not selected');
+                    } else {
+                        var selectedTime = new Date(val * 1000);
+                        console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
+                        $scope.selectedTime = 'Votre heure d\'entrainement :', val, selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M';
+                    }
+                },
+                inputTime: 50400,   //Optional
+                format: 24,         //Optional
+                step: 5,           //Optional
+                setLabel: 'Valider'    //Optional
+            };
+            ionicTimePicker.openTimePicker(ipObj1);
+        }
 
     });

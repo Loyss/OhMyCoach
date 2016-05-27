@@ -1,6 +1,7 @@
 <ion-view view-title="Programme">
     <ion-content class="padding">
         <div class="list">
+            <h4 class="text-center">Choisissez votre jour d'entrainement</h4>
             <label class="item item-input item-select">
                 <div class="input-label">
                     Jours
@@ -15,8 +16,11 @@
                     <option>Dimanche</option>
                 </select>
             </label>
-            <input type="date">
         </div>
-        <button class="button button-block button-balanced">Valider !</button>
+        <div class="selectedTime">
+            <h5>{{selectedTime}}</h5>
+        </div>
+        <button class="button button-block button-positive" ng-click="timetime()">Choisir son heure</button>
+            <button class="button button-block button-balanced">Valider !</button>
     </ion-content>
 </ion-view>
