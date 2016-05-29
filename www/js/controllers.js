@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker'])
+angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordova'])
 
 
 .controller('AppCtrl', function($scope, $state, $http, $sessionStorage, $window) {
@@ -368,7 +368,7 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker'])
         };
 
     })
-    .controller('ProgramController', function($scope, ionicTimePicker ){
+    .controller('ProgramController', function($scope, ionicTimePicker, $cordovaLocalNotification, $ionicPlatform, $window ){
 
 
         $scope.timetime = function(){
@@ -379,15 +379,44 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker'])
                     } else {
                         var selectedTime = new Date(val * 1000);
                         console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
-                        $scope.selectedTime = 'Votre heure d\'entrainement :', val, selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M';
                     }
                 },
+
                 inputTime: 50400,   //Optional
                 format: 24,         //Optional
                 step: 5,           //Optional
                 setLabel: 'Valider'    //Optional
+
             };
             ionicTimePicker.openTimePicker(ipObj1);
-        }
+        };
+
+        $scope.$on("$cordovaLocalNotification:added", function(id, state, json) {
+            alert("Added a notification");
+        });
+
+        $scope.add = function() {
+            var alarmTime = new Date();
+            alarmTime.setMinutes(alarmTime.getMinutes() + 1);
+            $cordovaLocalNotification.add({
+                id: "1234",
+                date: alarmTime,
+                message: "This is a message",
+                title: "This is a title",
+                autoCancel: true,
+                sound: null
+            }).then(function () {
+                console.log("The notification has been set");
+            });
+        };
+
+        $scope.isScheduled = function() {
+            $cordovaLocalNotification.isScheduled("1234").then(function(isScheduled) {
+                alert("Notification 1234 Scheduled: " + isScheduled);
+            });
+        };
+
 
     });
+
+

@@ -9814,3 +9814,12 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+.logo {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+  .logo img {
+    width: 100%; }
+
+.platform-ios #menu-title {
+  margin-top: 20px; }
