@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordova'])
 
 
-.controller('AppCtrl', function($scope, $state, $http, $sessionStorage, $window) {
+.controller('AppCtrl', function($scope, $state, $http, $sessionStorage, $window, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -30,9 +30,12 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
     }
 
     $scope.logout = function () {
-        $sessionStorage.$reset();
-        $state.go('app.login');
-        $window.location.reload(true);
+        $timeout(function(){
+            $sessionStorage.$reset();
+            $state.go('app.login');
+            $window.location.reload(true);
+        }, 200);
+
     };
 })
     .controller('RegisterController', function($scope, $http, $state, $ionicPopup, $window){
@@ -105,7 +108,7 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
     })
 
 
-    .controller('LoginController', function($scope, $http, $state, $sessionStorage, $window, $ionicPopup){
+    .controller('LoginController', function($scope, $http, $state, $sessionStorage, $window, $ionicPopup, $timeout){
 
         if (angular.isDefined($sessionStorage.currentUser)) {
             $state.go('app.profil');
@@ -132,9 +135,11 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
                             if(response.success == true) {
                                 $scope.userData = {};
                                 $sessionStorage.currentUser = response.user;
-                                $state.go('app.profil');
-                                $window.location.reload(true);
-                                console.log($sessionStorage.currentUser);
+                                $timeout(function(){
+                                    $state.go('app.profil');
+                                    $window.location.reload(true);
+                                    console.log($sessionStorage.currentUser);
+                                }, 300);
                             }else {
                                 $scope.userData.user_password = "";
                                 $ionicPopup.alert({
@@ -311,7 +316,7 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
             });
         }
     })
-    .controller('FormController', function($scope, $http, $state, $sessionStorage, $window){
+    .controller('FormController', function($scope, $http, $state, $sessionStorage, $window, $rootScope){
         $scope.viewForm2 = function() {
             $state.go("app.form2");
             $scope.error = "";
@@ -325,19 +330,20 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
             $state.go("app.result");
             $scope.error = "";
         };
+
         var sexeArray = ['homme', 'femme', 'peu importe'];
         var choixSexe = sexeArray[Math.floor(Math.random() * sexeArray.length)];
         console.log(choixSexe);
-
-        var attitudeArray = ['ami', 'officier', 'peu importe'];
-        var choixAttitude = attitudeArray[Math.floor(Math.random() * attitudeArray.length)];
-        console.log(choixAttitude);
 
         if (choixSexe === "peu importe") {
             var sexeArray = ['homme', 'femme'];
             var choixSexe = sexeArray[Math.floor(Math.random() * sexeArray.length)];
             console.log(choixSexe);
         }
+
+        var attitudeArray = ['ami', 'officier', 'peu importe'];
+        var choixAttitude = attitudeArray[Math.floor(Math.random() * attitudeArray.length)];
+        console.log(choixAttitude);
 
         if (choixAttitude === "peu importe") {
             var attitudeArray = ['ami', 'officier'];
@@ -360,6 +366,7 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
         }
         _choiceCoach();
     })
+
     .controller('ResultsController', function($scope, $state, $window){
         $scope.viewProfil = function() {
             $state.go("app.profil", {}, {reload: true});
@@ -368,9 +375,9 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
         };
 
     })
-    .controller('ProgramController', function($scope, ionicTimePicker, $cordovaLocalNotification, $ionicPlatform, $window ){
 
-
+    .controller('ProgramController', function($scope, ionicTimePicker, $cordovaLocalNotification, $stateParams, $ionicPlatform, $window ){
+        $scope.timePicker = "";
         $scope.timetime = function(){
             var ipObj1 = {
                 callback: function (val) {
@@ -379,6 +386,7 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
                     } else {
                         var selectedTime = new Date(val * 1000);
                         console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
+                        $scope.timePicker = 'Votre entrainement est à ' + selectedTime.getUTCHours()+ ' H ' + selectedTime.getUTCMinutes();
                     }
                 },
 
@@ -395,6 +403,7 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
             alert("Added a notification");
         });
 
+/*
         $scope.add = function() {
             var alarmTime = new Date();
             alarmTime.setMinutes(alarmTime.getMinutes() + 1);
@@ -410,13 +419,16 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
             });
         };
 
+        $ionicPlatform.ready(function() {
+            if(device.platform === "iOS") {
+                window.plugin.notification.local.promptForPermission();
+            }
+        });
+
         $scope.isScheduled = function() {
             $cordovaLocalNotification.isScheduled("1234").then(function(isScheduled) {
                 alert("Notification 1234 Scheduled: " + isScheduled);
             });
         };
-
-
+*/
     });
-
-
