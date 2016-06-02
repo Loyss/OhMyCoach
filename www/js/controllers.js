@@ -114,8 +114,8 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
             $state.go('app.profil');
         }
 
-        $scope.viewRegister = function() {
-            $state.go("app.register");
+        $scope.viewQuestion = function() {
+            $state.go("app.form");
             $scope.error = "";
         };
 
@@ -368,10 +368,15 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
     })
 
     .controller('ResultsController', function($scope, $state, $window){
-        $scope.viewProfil = function() {
+        /*  $scope.viewProfil = function() {
             $state.go("app.profil", {}, {reload: true});
             $scope.error = "";
             $window.location.reload(true);
+        };*/
+
+        $scope.viewRegister = function() {
+            $state.go("app.register");
+            $scope.error = "";
         };
 
     })
