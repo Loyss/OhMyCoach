@@ -3,11 +3,13 @@
         <h3 class="title text-center">Votre coach, vous préférez être suivi par ?</h3>
         <form ng-submit="form()">
             <ion-list>
-                <ion-radio ng-model="choice" ng-value="'A'">Une femme</ion-radio>
-                <ion-radio ng-model="choice" ng-value="'B'">Un homme</ion-radio>
-                <ion-radio ng-model="choice" ng-value="'C'">Peu importe</ion-radio>
+                <ion-radio ng-model="choixSexe" ng-value="'femme'">Une femme</ion-radio>
+                <ion-radio ng-model="choixSexe" ng-value="'homme'">Un homme</ion-radio>
+                <ion-radio ng-model="choixSexe" ng-value="'peu importe'">Peu importe</ion-radio>
             </ion-list>
             <button class="button button-block button-balanced" type="button" ng-click="viewForm3()">Valider</button>
         </form>
     </ion-content>
 </ion-view>
+
+

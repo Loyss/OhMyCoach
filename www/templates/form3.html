@@ -3,9 +3,9 @@
         <h3 class="title text-center">Votre coach, vous le voyez comme ?</h3>
         <form ng-submit="form()">
             <ion-list>
-                <ion-radio ng-model="choice" ng-value="'A'">Un ami</ion-radio>
-                <ion-radio ng-model="choice" ng-value="'B'">Un officier</ion-radio>
-                <ion-radio ng-model="choice" ng-value="'C'">Peu importe</ion-radio>
+                <ion-radio ng-model="choixAttitude" ng-value="'ami'">Un ami</ion-radio>
+                <ion-radio ng-model="choixAttitude" ng-value="'officier'">Un officier</ion-radio>
+                <ion-radio ng-model="choixAttitude" ng-value="'peu importe'">Peu importe</ion-radio>
             </ion-list>
             <button class="button button-block button-balanced" type="button" ng-click="viewResult()">Valider</button>
         </form>

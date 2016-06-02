@@ -331,21 +331,16 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
             $scope.error = "";
         };
 
-        var sexeArray = ['homme', 'femme', 'peu importe'];
-        var choixSexe = sexeArray[Math.floor(Math.random() * sexeArray.length)];
-        console.log(choixSexe);
 
-        if (choixSexe === "peu importe") {
+        <!-- $rootScope.choiceSexe = $scope.choice -->
+
+        if ($rootScope.choixSexe === "peu importe") {
             var sexeArray = ['homme', 'femme'];
             var choixSexe = sexeArray[Math.floor(Math.random() * sexeArray.length)];
             console.log(choixSexe);
         }
 
-        var attitudeArray = ['ami', 'officier', 'peu importe'];
-        var choixAttitude = attitudeArray[Math.floor(Math.random() * attitudeArray.length)];
-        console.log(choixAttitude);
-
-        if (choixAttitude === "peu importe") {
+        if ($rootScope.choixAttitude === "peu importe") {
             var attitudeArray = ['ami', 'officier'];
             var choixAttitude = attitudeArray[Math.floor(Math.random() * attitudeArray.length)];
             console.log(choixAttitude);
@@ -353,11 +348,11 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
 
         function _choiceCoach() {
 
-            if(choixSexe === "femme" && choixAttitude === "ami"){
+            if($rootScope.choixSexe === "femme" && $rootScope.choixAttitude === "ami"){
                 console.log('Jade');
-            }else if (choixSexe === "femme" && choixAttitude === "officier"){
+            }else if ($rootScope.choixSexe === "femme" && $rootScope.choixAttitude === "officier"){
                 console.log('Celine');
-            }else if (choixSexe === "homme" && choixAttitude === "ami") {
+            }else if ($rootScope.choixSexe === "homme" && $rootScope.choixAttitude === "ami") {
                 console.log('Arthur');
             }else{
                 console.log('Bruce')
