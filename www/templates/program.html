@@ -1,7 +1,7 @@
-<ion-view view-title="Programme">
+<ion-view class="fond" view-title="Programme">
     <ion-content class="padding">
         <div class="list">
-            <h4 class="text-center">Choisissez votre jour d'entrainement</h4>
+            <h4 class="text-center texte-blanc">Choisissez votre jour d'entrainement</h4>
             <label class="item item-input item-select">
                 <div class="input-label">
                     Jours
@@ -17,15 +17,15 @@
                 </select>
             </label>
         </div>
-        <button class="button button-block button-positive" ng-click="timetime()">Choisir son heure</button>
+        <button class="button button-block button-positive boutton-radius" ng-click="timetime()">Choisir son heure</button>
         <div class="selectedTime">
             <h4 class="text-center">{{ timePicker}}</h4>
         </div>
-        <button class="button button-block button-balanced">Valider !</button>
+        <button class="button button-block button-balanced boutton-radius">Valider !</button>
 
         <div class="notif text-center">
-            <button class="button button-assertive" ng-click="add()">Add notification</button>
-            <button class="button button-assertive" ng-click="isScheduled()">Is Scheduled</button>
+            <button class="button button-assertive boutton-radius" ng-click="add()">Add notification</button>
+            <button class="button button-assertive boutton-radius" ng-click="isScheduled()">Is Scheduled</button>
         </div>
     </ion-content>
 </ion-view>

@@ -1,13 +1,15 @@
-<ion-view view-title="Form">
-    <ion-content class="padding">
-        <h3 class="title text-center">Quel est votre niveau sportif aujourd'hui ?</h3>
+<ion-view class="pane fond" view-title="Form">
+    <ion-content>
+        <h3 class="title text-center texte-blanc">Quel est votre niveau sportif aujourd'hui ?</h3>
         <form ng-submit="form()">
             <ion-list>
                 <ion-radio ng-required="true" ng-model="choice" ng-value="'A'">Débutant</ion-radio>
                 <ion-radio ng-required="true" ng-model="choice" ng-value="'B'">Intermédiaire</ion-radio>
                 <ion-radio ng-required="true" ng-model="choice" ng-value="'C'">Confirmé</ion-radio>
             </ion-list>
-            <button class="button button-block button-balanced" type="button" ng-click="viewForm2()">Valider</button>
+            <div class="padding">
+                <button class="button button-block button-balanced boutton-radius vert" type="button" ng-click="viewForm2()">Valider</button>
+            </div>
         </form>
     </ion-content>
 </ion-view>

@@ -1,13 +1,16 @@
-<ion-view view-title="Form">
-    <ion-content class="padding">
-        <h3 class="title text-center">Votre coach, vous préférez être suivi par ?</h3>
+<ion-view class="fond" view-title="Form">
+    <ion-content>
+        <h3 class="title text-center texte-blanc">Votre coach, vous préférez être suivi par ?</h3>
         <form ng-submit="form()">
             <ion-list>
                 <ion-radio ng-model="choixSexe" ng-value="'femme'">Une femme</ion-radio>
                 <ion-radio ng-model="choixSexe" ng-value="'homme'">Un homme</ion-radio>
                 <ion-radio ng-model="choixSexe" ng-value="'peu importe'">Peu importe</ion-radio>
             </ion-list>
-            <button class="button button-block button-balanced" type="button" ng-click="viewForm3()">Valider</button>
+            <div class="padding">
+                <button class="button button-block button-balanced boutton-radius vert" type="button" ng-click="viewForm3()">Valider</button>
+            </div>
+
         </form>
     </ion-content>
 </ion-view>

@@ -30,8 +30,30 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
-.platform-ios {
-  #menu-title {
-    margin-top: 20px;
-  }
+.fond{
+  background-color: #009caf !important;
+}
+
+.texte-blanc{
+  color: white !important;
+}
+
+.bleu-fonce{
+  background-color: #00365c!important;
+}
+
+.bleu-clair{
+  background-color: #8eaa90!important;
+}
+
+.vert{
+  background-color: #c4ca2b!important;
+}
+
+.boutton-radius{
+  border-radius: 25px;
+}
+
+.title title-center header-item{
+  color: white;
 }
