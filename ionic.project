@@ -1,6 +1,6 @@
 {
   "name": "OhMyCoach!",
-  "app_id": "d2828006",
+  "app_id": "6d005d87",
   "gulpStartupTasks": [
     "sass",
     "watch"

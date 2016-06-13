@@ -399,9 +399,9 @@ angular.module('starter.controllers', ['ngStorage', 'ionic-timepicker', 'ngCordo
             ionicTimePicker.openTimePicker(ipObj1);
         };
 
-        $scope.$on("$cordovaLocalNotification:added", function(id, state, json) {
+        /*$scope.$on("$cordovaLocalNotification:added", function(id, state, json) {
             alert("Added a notification");
-        });
+        });*/
 
 /*
         $scope.add = function() {

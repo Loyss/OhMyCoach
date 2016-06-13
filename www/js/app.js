@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
+angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova'])
 
     .run(function($ionicPlatform, $rootScope, $timeout) {
         $ionicPlatform.ready(function() {
@@ -19,7 +19,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-            window.plugin.notification.local.onadd = function (id, state, json) {
+            /*window.plugin.notification.local.onadd = function (id, state, json) {
                 var notification = {
                     id: id,
                     state: state,
@@ -28,7 +28,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
                 $timeout(function() {
                     $rootScope.$broadcast("$cordovaLocalNotification:added", notification);
                 });
+            };*/
+
+            // Enable to debug issues.
+            // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+
+            var notificationOpenedCallback = function(jsonData) {
+                console.log('didReceiveRemoteNotificationCallBack: ' + JSON.stringify(jsonData));
             };
+
+            window.plugins.OneSignal.init("7aeecdfd-9e70-4e0a-9aa5-87b8381bb2f6",
+                {googleProjectNumber: "698431587597"},
+                notificationOpenedCallback);
+
+            // Show an alert box if a notification comes in when the user is in your app.
+            window.plugins.OneSignal.enableInAppAlertNotification(true);
+
+            var push = new Ionic.Push({
+                "debug": true
+            });
+
+            push.register(function(token) {
+                console.log("Device token:",token.token);
+                push.saveToken(token);  // persist the token in the Ionic Platform
+            });
+            
         });
     })
 
